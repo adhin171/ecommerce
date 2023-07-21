@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+    {{ product.desc|truncatewords:155 }}
+{% endblock %}
+
+{% block title %}
+    {{ product.name }} -- ABC store
+{% endblock %}
+
+{% block content %}
+<div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-lg-6 text-center">
+        <div>
+          <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <h1>{{ product.name }}</h1>
+        <p class="text-justify"><i class="fa-brands fa-product-hunt fa-spin"></i>Product Description</p>
+        <p>${{ product.price }}</p>
+        <p>{{ product.desc }}</p>
+        {% if product.stock <= 0 %}
+        <p class="text-justify"><b>Out of stock</b></p>
+        {% else %}
+        <a class="btn btn-animated" href="{% url 'cart:add_cart' product.id %}"><i class="fa-solid fa-cart-shopping fa-bounce"></i>Add to cart</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+

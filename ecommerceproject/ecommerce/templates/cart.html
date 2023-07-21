@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+    Review your cart items.....
+{% endblock %}
+
+{% block title %}
+    CART--ABC company pvt ltd
+{% endblock %}
+
+{% block content %}
+    {% if not cart_items %}
+        <div>
+            <div style="text-align: center;">
+                <br>
+                <h1 style="text-align: center;">
+                    Your Shopping Cart is Empty
+                </h1>
+                <br>
+                <p style="text-align: center;">
+                    please <a href="{% url 'ecommerceapp:allprodcat' %}" style="text-decoration: none; color: #007bff;"><i class="fa-solid fa-shop"></i>Click Here</a> To continue Shopping
+                </p>
+            </div>
+        </div>
+    {% else %}
+        <div>
+            <div style="text-align: center;">
+                <br>
+                <h1 style="text-align: center;">
+                    Your shopping Cart
+                </h1>
+                <br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6" style="text-align: center;">
+                <table class="table" style="border-collapse: collapse; width: 100%;">
+                    <thead style="background-color: #f8f9fa;">
+                        <tr>
+                            <th colspan="5">
+                                your items
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cart_item in cart_items %}
+                            <tr>
+                                <td>
+                                    <a href="cart_item.product.get_absolute_url"><img src="{{cart_item.product.image.url}}" alt="" style="width: 100px; height: 100px; display: block; margin: 0 auto; border-radius: 5px;"></a>
+                                </td>
+                                <td style="text-align: left;">
+                                    {{cart_item.product.name}}
+                                    <br>
+                                    SKU: {{cart_item.product.id}}
+                                    <br>
+                                    price: ${{cart_item.product.price}}
+                                    <br>
+                                    Qty: {{cart_item.quantity}}
+                                </td>
+                                <td>
+                                    ${{cart_item.sub_total}}
+                                </td>
+                                <td>
+                                    {% if cart_item.quantity < cart_item.product.stock %}
+                                        &nbsp;<a href="{% url 'cart:add_cart' cart_item.product.id %}" class="custom_a" style="background-color: #007bff; color: #fff; text-decoration: none; padding: 5px 10px; border-radius: 5px;"> <i class="fa-solid fa-plus"></i></a>
+                                    {% endif %}
+                                    &nbsp;&nbsp;<a href="{% url 'cart:cart_remove' cart_item.product.id %}" class="custom_a" style="background-color: #007bff; color: #fff; text-decoration: none; padding: 5px 10px; border-radius: 5px;"> <i class="fa-solid fa-minus"></i></a>
+                                    &nbsp;&nbsp;<a href="{% url 'cart:full_remove' cart_item.product.id %}" class="custom_icon" style="background-color: #007bff; color: #fff; text-decoration: none; padding: 5px 10px; border-radius: 5px;"> <i class="fa-solid fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6" style="text-align: center;">
+                <table class="table" style="border-collapse: collapse; width: 100%;">
+                    <thead style="background-color: #f8f9fa;">
+                        <tr>
+                            <th>
+                                Checkout
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Please review your cart item before proceeding with the order payment.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">
+                                Your total is <strong>{{total}}</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <a href="{% url 'ecommerceapp:allprodcat' %}" class="btn btn-secondary" style="background-color: #6c757d; color: #fff; text-decoration: none; padding: 10px 15px; border-radius: 5px;"><i class="fa-solid fa-shop"></i>Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
